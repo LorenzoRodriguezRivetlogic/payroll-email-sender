@@ -1,0 +1,33 @@
+<br />
+<table>
+  <tr>
+    <td>Employee Name</td>
+    <td>ID Nº</td>
+    <td>Monthly Fixed Gross Salary US$</td>
+    <td>Qty. days</td>
+    <td>Gross Salary US$</td>
+    <td>Other payments</td>
+    <td>This Month Gross salary to pay US$</td>
+    <td>Gross Salary in colones</td>
+    <td>Social Security</td>
+    <td>Salary Tax</td>
+    <td>Life & Health Insurance</td>
+    <td>Net Salary in colones</td>
+    <td>Net Salary US$</td>
+  </tr>
+  <tr>
+    <td>$name</td>
+    <td>$id</td>
+    <td>$mFixedDol</td>
+    <td>$qDays</td>
+    <td>$grossSal</td>
+    <td>$oPays</td>
+    <td>$thisMGrossSal</td>
+    <td>$grossSalCol</td>
+    <td>$ss</td>
+    <td>$st</td>
+    <td>$lhInsu</td>
+    <td>$nSalCol</td>
+    <td>$nSal</td>
+  </tr>
+</table>
