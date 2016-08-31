@@ -3,7 +3,6 @@ package com.rivetlogic.payrollemailsender.model;
 public class FileColumn {
 	private int id;
 	private String name;
-	private String nameToUse;
 	private Boolean use;
 	private Boolean isEmail;
 	
@@ -37,13 +36,5 @@ public class FileColumn {
 	
 	public void setIsEmail(Boolean isEmail) {
 		this.isEmail = isEmail;
-	}
-
-	public String getNameToUse() {
-		return nameToUse;
-	}
-
-	public void setNameToUse(String nameToUse) {
-		this.nameToUse = nameToUse;
 	}
 }

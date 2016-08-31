@@ -54,21 +54,19 @@ public class PayrollEmailSender extends MVCPortlet {
 		List<FileColumn> columnsToUse = new ArrayList<FileColumn>();
 		
 		String fileId = ParamUtil.getString(request, "selectedFile");
-		String fields[] = ParamUtil.getParameterValues(request,"field");
 		int containsEmail = ParamUtil.getInteger(request, "containsEmail");
 		String uses[] = ParamUtil.getParameterValues(request,"useInHtml");
 		
 		List<FileColumn> columns = FileUtil.getFileColumns(fileId);
 		
 		for (FileColumn fileColumn : columns) {
-			fileColumn.setNameToUse(fields[fileColumn.getId()]);
 			fileColumn.setUse(Boolean.valueOf(uses[fileColumn.getId()]));
 			
 			if (fileColumn.getId() == containsEmail) {
 				fileColumn.setIsEmail(true);
 			}
 			
-			if (fileColumn.getUse() || fileColumn.getIsEmail()) {
+			if (fileColumn.getUse()) {
 				columnsToUse.add(fileColumn);
 			}
 		}

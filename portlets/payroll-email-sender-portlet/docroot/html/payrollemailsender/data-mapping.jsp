@@ -28,14 +28,11 @@
 			keyProperty="id"
 			modelVar="column" >
 			
-			<liferay-ui:search-container-column-text property="name" />
-			<liferay-ui:search-container-column-text name="Name in HTML">
-                <aui:input name="field" value="<%= column.getName() %>" />
-            </liferay-ui:search-container-column-text>
-            <liferay-ui:search-container-column-text name="Use in HTML">
+			<liferay-ui:search-container-column-text property="name" name="name-csv" />
+            <liferay-ui:search-container-column-text name="use-html">
 			    <aui:input name="useInHtml" label="" type="checkbox" />
 			</liferay-ui:search-container-column-text>
-			<liferay-ui:search-container-column-text name="Contains Email">
+			<liferay-ui:search-container-column-text name="contains-email">
 			    <aui:input name="containsEmail" label="" type="radio" value="<%= column.getId() %>"/>
 			</liferay-ui:search-container-column-text>
 			
