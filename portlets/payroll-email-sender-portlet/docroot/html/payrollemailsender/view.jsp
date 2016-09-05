@@ -3,7 +3,6 @@
 <h3><liferay-ui:message key="upload-title" /></h3>
 
 <portlet:actionURL name="uploadCsv" var="uploadURL">
-	<portlet:param name="backURL" value="<%= currentURL %>"/>
 </portlet:actionURL>
 
 <aui:form action="<%= uploadURL %>" method="POST" enctype="multipart/form-data"> 
@@ -16,6 +15,6 @@
     </aui:row>
 
     <aui:button-row>
-        <aui:button type="submit" value="Continue" />
+        <aui:button type="submit" value="continue-button" />
     </aui:button-row>
 </aui:form>

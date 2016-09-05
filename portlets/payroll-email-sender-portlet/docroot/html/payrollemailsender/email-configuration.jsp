@@ -1,21 +1,30 @@
 <%@ include file="/html/init.jsp"%>
 
 <%
-	String backURL = ParamUtil.getString(request, "backURL");
-	String fileId = ParamUtil.getString(request, "fileId");
+	String fileId = ParamUtil.getString(request, WebKeys.FILE_ID);
+	String emailString = ParamUtil.getString(request, WebKeys.COLUMN_EMAIL) ;
+	String paramsAttr = ParamUtil.getString(request, WebKeys.COLUMNS_TO_USE);
+	String emailSender = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
+	String subject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
 	
-	List<FileColumn> params = (List<FileColumn>) request.getAttribute("params");
-	
-	pageContext.setAttribute(PrefsKeys.SUBS_EMAIL, GetterUtil.getString(portletPreferences.getValue(PrefsKeys.SUBS_EMAIL, StringPool.BLANK)));
-	pageContext.setAttribute(PrefsKeys.SUBS_SUBJECT, MailUtil.getSubject(renderRequest));
-
-	String template = MailUtil.getTemplate(renderRequest);
+	List<FileColumn> params = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(paramsAttr);
+	FileColumn emailColumn = (FileColumn) JSONFactoryUtil.looseDeserialize(emailString);
 %>
 
-<liferay-ui:header showBackURL="true" backURL="<%= backURL %>"  title="email-config" />
+<portlet:renderURL var="returnUrl">
+	<portlet:param name="mvcPath" value="<%= WebKeys.DATA_MAPPING_URL %>" />
+    <portlet:param name="fileId" value="<%= fileId %>" />
+</portlet:renderURL>
 
-<portlet:actionURL name="sendMails" var="sendMailsURL">
+<portlet:actionURL name="showPreview" var="showPreviewURL">
+	<portlet:param name="mvcPath" value="<%= WebKeys.PREVIEW_URL %>" />
 </portlet:actionURL>
+
+<portlet:actionURL name="saveTemplate" var="saveTemplateURL">
+	<portlet:param name="jspPage" value="<%= WebKeys.EMAIL_CONFIGURATION_URL %>" />
+</portlet:actionURL>
+
+<liferay-ui:header showBackURL="true" backURL="<%= returnUrl.toString() %>"  title="email-config" />
 
 <aui:container>
 	<aui:row>
@@ -33,28 +42,41 @@
 			</div>
 		</aui:col>
 		<aui:col width="75">
-			<aui:form action="<%= sendMailsURL %>">
-				<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
+			<form method="post" action="<%= showPreviewURL %>" enctype="multipart/form-data" onsubmit="<portlet:namespace />extractCodeFromEditor()" name="<portlet:namespace />fm" >
 			
 				<aui:fieldset>
-					<aui:input name="preferences--email--" label="subscription-email" required="true" value="${ email }">
+					<aui:input name="columnsToUse" value="<%= paramsAttr %>" type="hidden" />
+					<aui:input name="emailColumn" value="<%= emailString %>" type="hidden" />
+					<aui:input name="fileId" value="<%= fileId %>" type="hidden" />
+				
+					<aui:input name="senderEmail" label="subscription-email" required="true" value="<%= emailSender %>">
 						<aui:validator name="email"/>
 					</aui:input>
 					
-					<aui:input name="preferences--subject--" label="subscription-subject" required="true" value="${ subject }" />
-					
-					<aui:field-wrapper label="subscription-template">					
-						<textarea class="receiver yui3-dd-drop" rows="10" cols="80">
-			            </textarea>
-			            
-						<liferay-ui:input-editor name="preferences--template--"/>
-					</aui:field-wrapper>
+					<aui:input name="emailSubject" label="subscription-subject" required="true" value="<%= subject %>" />			
+							
+					<aui:field-wrapper label="">		
+						<liferay-ui:input-editor />
+						<input name="<portlet:namespace />content" type="hidden" value="" />
+                    </aui:field-wrapper>
+
 				</aui:fieldset>
 						
 				<aui:button-row>
-					<aui:button type="submit"/>
+    				<aui:button type="submit" value="show-preview" />
 				</aui:button-row>
-			</aui:form>
+			</form>
 		</aui:col>
 	</aui:row>
 </aui:container>
+
+<script type="text/javascript">
+	function <portlet:namespace />initEditor() {
+		return '<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>Columna</td><td>Columna</td></tr><tr><td>$column_a</td><td>$column_b</td></tr></tbody></table>';
+	}
+	
+	function <portlet:namespace />extractCodeFromEditor() {
+		var x = document.<portlet:namespace />fm.<portlet:namespace />content.value = window.<portlet:namespace />editor.getHTML();
+		submitForm(document.<portlet:namespace />fm);
+	}
+</script>

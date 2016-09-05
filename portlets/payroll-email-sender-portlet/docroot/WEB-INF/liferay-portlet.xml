@@ -6,7 +6,6 @@
 	<portlet>
 		<portlet-name>payroll-email-sender</portlet-name>
 		<icon>/icon.png</icon>
-		<configuration-action-class>com.liferay.portal.kernel.portlet.DefaultConfigurationAction</configuration-action-class>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>
 			/js/main.js

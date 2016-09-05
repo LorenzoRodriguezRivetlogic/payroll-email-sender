@@ -1,6 +1,9 @@
 package com.rivetlogic.payrollemailsender.model;
 
-public class FileColumn {
+import java.io.Serializable;
+
+public class FileColumn implements Serializable {
+	
 	private int id;
 	private String name;
 	private Boolean use;

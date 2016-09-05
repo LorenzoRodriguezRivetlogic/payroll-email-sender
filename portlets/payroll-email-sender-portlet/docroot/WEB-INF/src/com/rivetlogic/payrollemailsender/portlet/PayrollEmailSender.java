@@ -2,6 +2,7 @@ package com.rivetlogic.payrollemailsender.portlet;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -12,6 +13,7 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.payrollemailsender.model.FileColumn;
 import com.rivetlogic.payrollemailsender.util.FileUtil;
+import com.rivetlogic.payrollemailsender.util.WebKeys;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,8 +43,8 @@ public class PayrollEmailSender extends MVCPortlet {
             SessionMessages.add(request, PortalUtil.getPortletId(request) + SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE);
         }
 		
-        response.setRenderParameter("jspPage", "/html/payrollemailsender/data-mapping.jsp");
-        response.setRenderParameter("fileId", String.valueOf(fileId));
+        response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.DATA_MAPPING_URL);
+        response.setRenderParameter(WebKeys.FILE_ID, String.valueOf(fileId));
         PortalUtil.copyRequestParameters(request, response);
         
         sendRedirect(request, response);
@@ -53,17 +55,19 @@ public class PayrollEmailSender extends MVCPortlet {
 		
 		List<FileColumn> columnsToUse = new ArrayList<FileColumn>();
 		
-		String fileId = ParamUtil.getString(request, "selectedFile");
-		int containsEmail = ParamUtil.getInteger(request, "containsEmail");
-		String uses[] = ParamUtil.getParameterValues(request,"useInHtml");
+		String fileId = ParamUtil.getString(request, WebKeys.FILE_ID);
+		int containsEmail = ParamUtil.getInteger(request, WebKeys.CONTAINS_EMAIL);
+		String uses[] = ParamUtil.getParameterValues(request, WebKeys.USE_IN_HTML);
 		
 		List<FileColumn> columns = FileUtil.getFileColumns(fileId);
+		FileColumn columnEmail = new FileColumn();
 		
 		for (FileColumn fileColumn : columns) {
 			fileColumn.setUse(Boolean.valueOf(uses[fileColumn.getId()]));
 			
 			if (fileColumn.getId() == containsEmail) {
 				fileColumn.setIsEmail(true);
+				columnEmail = fileColumn;
 			}
 			
 			if (fileColumn.getUse()) {
@@ -71,11 +75,35 @@ public class PayrollEmailSender extends MVCPortlet {
 			}
 		}
 		
-		response.setRenderParameter("jspPage", "/html/payrollemailsender/email-configuration.jsp");
-        response.setRenderParameter("fileId", String.valueOf(fileId));
-        request.setAttribute("params", columnsToUse);
+		response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.EMAIL_CONFIGURATION_URL);
+        response.setRenderParameter(WebKeys.FILE_ID, String.valueOf(fileId));
+        response.setRenderParameter(WebKeys.COLUMNS_TO_USE, JSONFactoryUtil.looseSerialize(columnsToUse));
+        response.setRenderParameter(WebKeys.COLUMN_EMAIL, JSONFactoryUtil.looseSerialize(columnEmail));
         PortalUtil.copyRequestParameters(request, response);
         
         sendRedirect(request, response);
     }
+	
+	public void showPreview(ActionRequest request, ActionResponse response) throws IOException {
+		List<FileColumn> params = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(ParamUtil.getString(request, WebKeys.COLUMNS_TO_USE));
+		FileColumn emailColumn = (FileColumn) JSONFactoryUtil.looseDeserialize(ParamUtil.getString(request, WebKeys.COLUMN_EMAIL));
+		String fileId = ParamUtil.getString(request, WebKeys.FILE_ID);
+		String templateValue = ParamUtil.getString(request, WebKeys.CONTENT);
+		String emailSender = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
+	    String subject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
+	    
+	    response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.PREVIEW_URL);
+	    response.setRenderParameter(WebKeys.FILE_ID, String.valueOf(fileId));
+	    response.setRenderParameter(WebKeys.COLUMNS_TO_USE, JSONFactoryUtil.looseSerialize(params));
+	    response.setRenderParameter(WebKeys.COLUMN_EMAIL, JSONFactoryUtil.looseSerialize(emailColumn));
+	    response.setRenderParameter(WebKeys.CONTENT, templateValue);
+	    response.setRenderParameter(WebKeys.SENDER_EMAIL, emailSender);
+	    response.setRenderParameter(WebKeys.EMAIL_SUBJECT, subject);
+        
+        sendRedirect(request, response);
+	}
+	
+	public void sendEmails(ActionRequest request, ActionResponse response) throws IOException {
+		
+	}
 }

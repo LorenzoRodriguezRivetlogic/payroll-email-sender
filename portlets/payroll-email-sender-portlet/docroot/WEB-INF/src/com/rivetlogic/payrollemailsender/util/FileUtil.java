@@ -16,6 +16,7 @@ import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.opencsv.CSVReader;
 import com.rivetlogic.payrollemailsender.model.FileColumn;
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +24,9 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FileUtil {
 	
@@ -148,7 +151,54 @@ public class FileUtil {
 			LOG.error("Utils::getFileColumns Exception", e);
 		}
 		
-		
 		return columns;
+	}
+	
+	public static Map<String, String> getFirstDataRow (final String fileId, final List<FileColumn> columns, FileColumn email) {
+		Long fileIdLong = Long.parseLong(fileId);
+		Map<String, String> firstRow = new HashMap<String, String>();
+		FileEntry file = getFileEntry(fileIdLong);
+		File rawFile;
+		
+		try {
+			rawFile = DLFileEntryLocalServiceUtil.getFile(file.getUserId(), file.getFileEntryId(), file.getVersion(), false);
+			CSVReader csvReader = new CSVReader(new FileReader(rawFile));
+
+			String [] nextLine;
+			int i = 0;
+			while ((nextLine = csvReader.readNext()) != null) {
+				if(i == 0) {
+					i++;
+					continue;
+				}
+				
+				firstRow = generateFirstRow(nextLine, columns, email);
+				break;
+			}
+		     
+			csvReader.close();
+		} catch (PortalException e) {
+			LOG.error("Utils::getFileColumns Exception", e);
+		} catch (SystemException e) {
+			LOG.error("Utils::getFileColumns Exception", e);
+		} catch (FileNotFoundException e) {
+			LOG.error("Utils::getFileColumns Exception", e);
+		} catch (Exception e) {
+			LOG.error("Utils::getFileColumns Exception", e);
+		}
+		
+		return firstRow;
+	}
+	
+	private static Map<String, String> generateFirstRow(String[] data, List<FileColumn> columns, FileColumn email) {
+		Map<String, String> firstRow = new HashMap<String, String>();
+		
+		for (FileColumn fileColumn : columns) {
+			firstRow.put(Utils.formatColumnName(fileColumn.getName()), data[fileColumn.getId()]);
+		}
+		
+		firstRow.put("email", data[email.getId()]);
+		
+		return firstRow;
 	}
 }
