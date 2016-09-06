@@ -16,6 +16,10 @@
 	    String key = entry.getKey();
 	    String value = entry.getValue();
 	    
+	    if (key.equals(WebKeys.EMAIL_TO_SEND)) {
+	    	continue;
+	    }
+	    
 	    template = template.replace(key, value);
 	}
 %>
@@ -42,7 +46,7 @@
 	</tr>
 	<tr>
 		<td><liferay-ui:message key="label-to" /></td>
-		<td><%= firstRow.get("email") %></td>
+		<td><%= firstRow.get(WebKeys.EMAIL_TO_SEND) %></td>
 	</tr>
 	<tr>
 		<td><liferay-ui:message key="label-subject" /></td>
@@ -54,6 +58,7 @@
 </div>
 
 <aui:form action="<%= sendEmailsURL %>" method="post" name="fm">
+	
 	<aui:button-row>
         <aui:button type="submit" value="send-button" />
     </aui:button-row>

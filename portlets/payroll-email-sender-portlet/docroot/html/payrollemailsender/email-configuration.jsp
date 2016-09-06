@@ -9,6 +9,8 @@
 	
 	List<FileColumn> params = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(paramsAttr);
 	FileColumn emailColumn = (FileColumn) JSONFactoryUtil.looseDeserialize(emailString);
+	
+	String generatedTable = Utils.generateHtmlTable(params);
 %>
 
 <portlet:renderURL var="returnUrl">
@@ -72,7 +74,7 @@
 
 <script type="text/javascript">
 	function <portlet:namespace />initEditor() {
-		return '<table border="1" cellpadding="1" cellspacing="1" style="width:500px;"><tbody><tr><td>Columna</td><td>Columna</td></tr><tr><td>$column_a</td><td>$column_b</td></tr></tbody></table>';
+		return '<%= generatedTable %>';
 	}
 	
 	function <portlet:namespace />extractCodeFromEditor() {

@@ -16,4 +16,8 @@ public interface WebKeys extends com.liferay.portal.kernel.util.WebKeys{
 	String CONTENT = "content";
 	String SENDER_EMAIL = "senderEmail";
 	String EMAIL_SUBJECT = "emailSubject";
+	String EMAIL_TO_SEND = "emailToSend";
+	String DEFAULT_FILE_NAME = "CSV - ";
+	String DEFAULT_FOLDER_NAME = "Temp Files";
+    String DEFAULT_FOLFER_DESC = "Uploaded temp files";
 }

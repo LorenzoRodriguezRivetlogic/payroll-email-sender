@@ -41,6 +41,7 @@
 <%@ page import="com.rivetlogic.payrollemailsender.util.PrefsKeys"%>
 <%@ page import="com.rivetlogic.payrollemailsender.util.MailUtil"%>
 <%@ page import="com.rivetlogic.payrollemailsender.util.FileUtil"%>
+<%@ page import="com.rivetlogic.payrollemailsender.util.Utils"%>
 <%@ page import="com.rivetlogic.payrollemailsender.model.FileColumn"%>
 
 <portlet:defineObjects />

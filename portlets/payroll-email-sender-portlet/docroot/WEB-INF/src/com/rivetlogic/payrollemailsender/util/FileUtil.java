@@ -16,7 +16,6 @@ import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.opencsv.CSVReader;
 import com.rivetlogic.payrollemailsender.model.FileColumn;
-import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,10 +30,6 @@ import java.util.Map;
 public class FileUtil {
 	
 	private static final Log LOG = LogFactoryUtil.getLog(FileUtil.class);
-	
-	public static final String DEFAULT_FILE_NAME = "CSV - ";
-    public static final String DEFAULT_FOLDER_NAME = "Payrolls";
-    public static final String DEFAULT_FOLFER_DESC = "Uploaded Payrolls";
     
 	private static boolean isAttachExistsInRequest(final UploadPortletRequest req) {
         final FileItem[] arr = req.getMultipartParameterMap().get("attachedFile");
@@ -81,7 +76,7 @@ public class FileUtil {
 		
 	    try {
 	    	
-	    	String name = String.format("%s - %s - %s", DEFAULT_FILE_NAME, Calendar.getInstance().getTimeInMillis(), fileName);
+	    	String name = String.format("%s - %s - %s", WebKeys.DEFAULT_FILE_NAME, Calendar.getInstance().getTimeInMillis(), fileName);
 	        final FileEntry entry = DLAppServiceUtil.addFileEntry(repositoryId,
 	                folderId, fileName, mimeType, name, null, null, is,
 	                fileLength, serviceContext);
@@ -112,9 +107,9 @@ public class FileUtil {
 		Folder folder = null;
 		long parent = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
         try {
-            folder = DLAppServiceUtil.getFolder(repositoryId, parent, DEFAULT_FOLDER_NAME);
+            folder = DLAppServiceUtil.getFolder(repositoryId, parent, WebKeys.DEFAULT_FOLDER_NAME);
         } catch(Exception e) {
-            folder = DLAppServiceUtil.addFolder(repositoryId, parent, DEFAULT_FOLDER_NAME, DEFAULT_FOLFER_DESC, serviceContext);
+            folder = DLAppServiceUtil.addFolder(repositoryId, parent, WebKeys.DEFAULT_FOLDER_NAME, WebKeys.DEFAULT_FOLFER_DESC, serviceContext);
         }
         
         return folder.getFolderId();
@@ -197,7 +192,7 @@ public class FileUtil {
 			firstRow.put(Utils.formatColumnName(fileColumn.getName()), data[fileColumn.getId()]);
 		}
 		
-		firstRow.put("email", data[email.getId()]);
+		firstRow.put(WebKeys.EMAIL_TO_SEND, data[email.getId()]);
 		
 		return firstRow;
 	}
