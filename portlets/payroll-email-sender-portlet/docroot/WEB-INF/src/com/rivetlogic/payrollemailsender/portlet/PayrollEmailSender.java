@@ -94,6 +94,9 @@ public class PayrollEmailSender extends MVCPortlet {
 		String emailSender = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
 	    String subject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
 	    
+	    templateValue = templateValue.replace("\n", "");
+	    templateValue = templateValue.replace("\t", "");
+	    
 	    response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.PREVIEW_URL);
 	    response.setRenderParameter(WebKeys.FILE_ID, String.valueOf(fileId));
 	    response.setRenderParameter(WebKeys.COLUMNS_TO_USE, JSONFactoryUtil.looseSerialize(params));

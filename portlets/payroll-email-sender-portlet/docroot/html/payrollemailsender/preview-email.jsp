@@ -36,6 +36,7 @@
     <portlet:param name="columnsToUse" value="<%= paramsAttr %>" />
     <portlet:param name="senderEmail" value="<%= emailSender %>" />
     <portlet:param name="emailSubject" value="<%= subject %>" />
+    <portlet:param name="content" value="<%= template %>" />
 </portlet:renderURL>
 
 <liferay-ui:header showBackURL="true" backURL="<%= returnUrl.toString() %>"  title="preview" />

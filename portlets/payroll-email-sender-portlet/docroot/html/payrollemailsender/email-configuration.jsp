@@ -6,11 +6,18 @@
 	String paramsAttr = ParamUtil.getString(request, WebKeys.COLUMNS_TO_USE);
 	String emailSender = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
 	String subject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
+	String template = ParamUtil.getString(request, WebKeys.CONTENT);
 	
 	List<FileColumn> params = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(paramsAttr);
 	FileColumn emailColumn = (FileColumn) JSONFactoryUtil.looseDeserialize(emailString);
 	
-	String generatedTable = Utils.generateHtmlTable(params);
+	String bckTemplate = "";
+	
+	if (template.isEmpty()) {
+		bckTemplate = Utils.generateHtmlTable(params);
+	} else {
+		bckTemplate += template;
+	}
 %>
 
 <portlet:renderURL var="returnUrl">
@@ -76,7 +83,7 @@
 	Liferay.on('portletReady',
 	   	function(event) {    
 			if('_' + event.portletId + '_' == '<portlet:namespace/>'){
-				CKEDITOR.instances.editor1.setData('<%= generatedTable %>');
+				CKEDITOR.instances.editor1.setData('<%= bckTemplate %>');
 			}
 	   	}
 	);      
