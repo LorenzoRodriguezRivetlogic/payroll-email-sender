@@ -9,7 +9,7 @@ public class Utils {
 		columnName = columnName.toLowerCase();
 		columnName = columnName.replace(" ", "_");
 		
-		return "$" + columnName;
+		return "${" + columnName + "}";
 	}
 	
 	public static String generateHtmlTable(List<FileColumn> columns) {

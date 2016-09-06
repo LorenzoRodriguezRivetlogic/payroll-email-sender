@@ -22,10 +22,6 @@
 	<portlet:param name="mvcPath" value="<%= WebKeys.PREVIEW_URL %>" />
 </portlet:actionURL>
 
-<portlet:actionURL name="saveTemplate" var="saveTemplateURL">
-	<portlet:param name="jspPage" value="<%= WebKeys.EMAIL_CONFIGURATION_URL %>" />
-</portlet:actionURL>
-
 <liferay-ui:header showBackURL="true" backURL="<%= returnUrl.toString() %>"  title="email-config" />
 
 <aui:container>
@@ -69,7 +65,7 @@
 				</aui:fieldset>
 						
 				<aui:button-row>
-					<aui:button type="submit" value="show-preview" onClick="submitForm();" />
+					<aui:button type="submit" value="show-preview" onClick="submitToPreview();" />
 				</aui:button-row>
 			</aui:form>
 		</aui:col>
@@ -84,7 +80,7 @@
 			}
 	   	}
 	);      
-	function submitForm() {
+	function submitToPreview() {
 		var template = CKEDITOR.instances.editor1.getData();
 		var senderEmail = document.getElementById("<portlet:namespace />senderEmail").value;
 		var emailSubject = document.getElementById("<portlet:namespace />emailSubject").value;

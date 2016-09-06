@@ -12,6 +12,7 @@
 	
 	Map<String, String> firstRow = FileUtil.getFirstDataRow(fileId, params, email);
 	
+	String tempPreview = template;
 	for (Map.Entry<String, String> entry : firstRow.entrySet()) {
 	    String key = entry.getKey();
 	    String value = entry.getValue();
@@ -20,7 +21,7 @@
 	    	continue;
 	    }
 	    
-	    template = template.replace(key, value);
+	    tempPreview = tempPreview.replace(key, value);
 	}
 %>
 
@@ -54,7 +55,7 @@
 	</tr>
 </table>
 <div style="border: 1px solid #d3d3d3; padding: 10px;">
-	<%= template %>
+	<%= tempPreview %>
 </div>
 
 <aui:form action="<%= sendEmailsURL %>" method="post" name="fm">
