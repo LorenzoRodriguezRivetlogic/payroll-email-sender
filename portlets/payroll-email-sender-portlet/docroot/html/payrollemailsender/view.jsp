@@ -1,5 +1,13 @@
 <%@ include file="/html/init.jsp"%>
 
+<% 
+	String fileId = ParamUtil.getString(request, WebKeys.FILE_ID);
+
+	if (!fileId.isEmpty()) {
+		FileUtil.deleteFileAndFolder(Long.parseLong(fileId));
+	}
+%>
+
 <h3><liferay-ui:message key="upload-title" /></h3>
 
 <portlet:actionURL name="uploadCsv" var="uploadURL">

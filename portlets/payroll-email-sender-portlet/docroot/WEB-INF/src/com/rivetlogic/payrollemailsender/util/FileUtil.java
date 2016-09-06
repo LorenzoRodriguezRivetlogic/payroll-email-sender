@@ -83,10 +83,24 @@ public class FileUtil {
 	        
 	        id = entry.getFileEntryId();
 	    } catch (final Exception e) {
-	        LOG.error("Utils::createFileEntry Exception", e);
+	    	LOG.error(e);
 	    }
 	    
 	    return id;
+	}
+
+	
+	public static void deleteFileAndFolder(final long fileId) {
+		try {
+			FileEntry fileEntry = getFileEntry(fileId);
+			
+			DLAppServiceUtil.deleteFileEntry(fileEntry.getFileEntryId());
+			DLAppServiceUtil.deleteFolder(fileEntry.getFolderId());
+		} catch (PortalException e) {
+			LOG.error(e);
+		} catch (SystemException e) {
+			LOG.error(e);
+		}
 	}
 	
 	public static FileEntry getFileEntry(final long fileId) {
@@ -95,9 +109,9 @@ public class FileUtil {
 		try {
 			fileEntry = DLAppServiceUtil.getFileEntry(fileId);
 		} catch (PortalException e) {
-			LOG.error("Utils::getFileEntry Exception", e);
+			LOG.error(e);
 		} catch (SystemException e) {
-			LOG.error("Utils::getFileEntry Exception", e);
+			LOG.error(e);
 		}
 		
 		return fileEntry;
@@ -137,13 +151,13 @@ public class FileUtil {
 			
 			csvReader.close();
 		} catch (PortalException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (SystemException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (FileNotFoundException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (Exception e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		}
 		
 		return columns;
@@ -173,13 +187,13 @@ public class FileUtil {
 		     
 			csvReader.close();
 		} catch (PortalException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (SystemException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (FileNotFoundException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (Exception e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		}
 		
 		return firstRow;
@@ -223,13 +237,13 @@ public class FileUtil {
 		     
 			csvReader.close();
 		} catch (PortalException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (SystemException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (FileNotFoundException e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		} catch (Exception e) {
-			LOG.error("Utils::getFileColumns Exception", e);
+			LOG.error(e);
 		}
 		
 		return results;

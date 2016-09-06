@@ -120,6 +120,7 @@ public class PayrollEmailSender extends MVCPortlet {
 		    List<Map<String, String>> data = FileUtil.getFileRows(fileId, columns, email);
 	    
 			MailUtil.sendEmails(senderEmail, content, emailSubject, data);
+			FileUtil.deleteFileAndFolder(Long.parseLong(fileId));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

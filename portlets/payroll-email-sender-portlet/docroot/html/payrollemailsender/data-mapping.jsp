@@ -8,6 +8,7 @@
 
 <portlet:renderURL var="returnUrl">
 	<portlet:param name="mvcPath" value="<%= WebKeys.VIEW_URL %>" />
+	<portlet:param name="fileId" value="<%= fileId %>" />
 </portlet:renderURL>
 
 
