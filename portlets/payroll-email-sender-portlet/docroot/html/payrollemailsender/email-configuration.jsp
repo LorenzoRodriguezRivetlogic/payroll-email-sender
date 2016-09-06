@@ -30,55 +30,82 @@
 
 <aui:container>
 	<aui:row>
-		<aui:col width="25">
-			<div class="sidebar" id="params">
-				<% 
-				for (FileColumn fileColumn : params) {
-				%>
-				<div class="drag alert alert-info">
-					<%= fileColumn.getName() %>
-				</div>
-				<% 
-				}
-				%>
-			</div>
-		</aui:col>
-		<aui:col width="75">
-			<form method="post" action="<%= showPreviewURL %>" enctype="multipart/form-data" onsubmit="<portlet:namespace />extractCodeFromEditor()" name="<portlet:namespace />fm" >
-			
+		<aui:col>
+			<aui:form action='<%= showPreviewURL %>' name='fm' method="post">
+
 				<aui:fieldset>
 					<aui:input name="columnsToUse" value="<%= paramsAttr %>" type="hidden" />
 					<aui:input name="emailColumn" value="<%= emailString %>" type="hidden" />
 					<aui:input name="fileId" value="<%= fileId %>" type="hidden" />
+					<aui:input name="content" value="" type="hidden" />
 				
 					<aui:input name="senderEmail" label="subscription-email" required="true" value="<%= emailSender %>">
 						<aui:validator name="email"/>
 					</aui:input>
 					
 					<aui:input name="emailSubject" label="subscription-subject" required="true" value="<%= subject %>" />			
-							
-					<aui:field-wrapper label="">		
-						<liferay-ui:input-editor />
-						<input name="<portlet:namespace />content" type="hidden" value="" />
-                    </aui:field-wrapper>
-
+					
+					<div class="columns">
+						<div class="editor">
+						    <div cols="10" id="editor1" name="editor1" rows="10"  contenteditable="true"></div>
+						</div>
+						<div class="contacts">
+						    <h3>List of Droppable Tags</h3>
+						    <ul id="contactList">
+						        <% 
+								int count = 0;
+								for (FileColumn fileColumn : params) {
+								%>
+								<li>
+								    <div class="contact h-card" data-contact="<%= count %>" draggable="true" tabindex="0"><%= fileColumn.getName() %></div>
+								</li>
+								<% 
+								count++;
+								}
+								%>
+					        </ul>
+					    </div>
+					</div>
 				</aui:fieldset>
 						
 				<aui:button-row>
-    				<aui:button type="submit" value="show-preview" />
+					<aui:button type="submit" value="show-preview" onClick="submitForm();" />
 				</aui:button-row>
-			</form>
+			</aui:form>
 		</aui:col>
 	</aui:row>
 </aui:container>
 
 <script type="text/javascript">
-	function <portlet:namespace />initEditor() {
-		return '<%= generatedTable %>';
+	Liferay.on('portletReady',
+	   	function(event) {    
+			if('_' + event.portletId + '_' == '<portlet:namespace/>'){
+				CKEDITOR.instances.editor1.setData('<%= generatedTable %>');
+			}
+	   	}
+	);      
+	function submitForm() {
+		var template = CKEDITOR.instances.editor1.getData();
+		var senderEmail = document.getElementById("<portlet:namespace />senderEmail").value;
+		var emailSubject = document.getElementById("<portlet:namespace />emailSubject").value;
+		
+		document.getElementById("<portlet:namespace />content").value = template;
+		
+		if (senderEmail === "") {
+			return;
+		}
+		
+		if (emailSubject === "") {
+			return;
+		}
+		if (!validateEmail(senderEmail)) {
+			return;	
+		}
+		
+		document.<portlet:namespace />fm.submit();
 	}
-	
-	function <portlet:namespace />extractCodeFromEditor() {
-		var x = document.<portlet:namespace />fm.<portlet:namespace />content.value = window.<portlet:namespace />editor.getHTML();
-		submitForm(document.<portlet:namespace />fm);
+	function validateEmail(email) {
+	    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	    return re.test(email);
 	}
 </script>

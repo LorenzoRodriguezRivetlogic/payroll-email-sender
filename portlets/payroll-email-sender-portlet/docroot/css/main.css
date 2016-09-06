@@ -1,0 +1,63 @@
+.columns {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #E7E7E7;
+}
+.columns:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+.columns > .editor {
+    float: left;
+    width: 75%;
+    position: relative;
+    z-index: 1;
+}
+.columns > .contacts {
+    float: right;
+    width: 25%;
+    box-sizing: border-box;
+    padding: 0 0 0 20px;
+}
+.columns > .contacts h3 {
+    text-align: center;
+}
+#contactList {
+    list-style-type: none;
+    margin: 0 !important;
+    padding: 0;
+    max-height: 305px;
+    overflow-y: scroll;
+}
+#contactList li {
+    background: #FAFAFA;
+    margin-bottom: 1px;
+    height: 56px;
+    line-height: 56px;
+    cursor: pointer;
+    text-align: center
+}
+#contactList li:nth-child(2n) {
+    background: #F3F3F3;
+}
+#contactList li:hover {
+    background: #FFFDE3;
+    opacity: 0,5;
+    border-left: 5px solid #DCDAC1;
+    margin-left: -5px;
+}
+.contact {
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+#editor1 {
+    border: 1px solid #E7E7E7;
+    padding: 0 20px;
+    background: #fff;
+    position: relative;
+}

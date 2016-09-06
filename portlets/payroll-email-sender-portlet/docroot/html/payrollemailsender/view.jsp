@@ -1,4 +1,4 @@
-<%@ include file="/html/init.jsp"%>
+ <%@ include file="/html/init.jsp"%>
 
 <% 
 	String fileId = ParamUtil.getString(request, WebKeys.FILE_ID);
