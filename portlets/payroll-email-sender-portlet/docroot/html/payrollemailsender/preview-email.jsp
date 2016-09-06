@@ -58,6 +58,12 @@
 </div>
 
 <aui:form action="<%= sendEmailsURL %>" method="post" name="fm">
+	<aui:input name="fileId" value="<%= fileId %>" type="hidden" />
+	<aui:input name="emailColumn" value="<%= emailString %>" type="hidden" />
+	<aui:input name="columnsToUse" value="<%= paramsAttr %>" type="hidden" />
+	<aui:input name="content" value="<%= template %>" type="hidden" />
+	<aui:input name="senderEmail" value="<%= emailSender %>" type="hidden" />
+	<aui:input name="emailSubject" value="<%= subject %>" type="hidden" />
 	
 	<aui:button-row>
         <aui:button type="submit" value="send-button" />

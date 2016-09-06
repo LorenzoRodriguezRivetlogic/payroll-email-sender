@@ -167,7 +167,7 @@ public class FileUtil {
 					continue;
 				}
 				
-				firstRow = generateFirstRow(nextLine, columns, email);
+				firstRow = generateRow(nextLine, columns, email);
 				break;
 			}
 		     
@@ -185,7 +185,7 @@ public class FileUtil {
 		return firstRow;
 	}
 	
-	private static Map<String, String> generateFirstRow(String[] data, List<FileColumn> columns, FileColumn email) {
+	private static Map<String, String> generateRow(String[] data, List<FileColumn> columns, FileColumn email) {
 		Map<String, String> firstRow = new HashMap<String, String>();
 		
 		for (FileColumn fileColumn : columns) {
@@ -195,5 +195,43 @@ public class FileUtil {
 		firstRow.put(WebKeys.EMAIL_TO_SEND, data[email.getId()]);
 		
 		return firstRow;
+	}
+	
+	public static List<Map<String, String>> getFileRows (final String fileId, final List<FileColumn> columns, FileColumn email) {
+		List<Map<String, String>> results = new ArrayList<Map<String,String>>();
+		Long fileIdLong = Long.parseLong(fileId);
+		FileEntry file = getFileEntry(fileIdLong);
+		File rawFile;
+		
+		try {
+			rawFile = DLFileEntryLocalServiceUtil.getFile(file.getUserId(), file.getFileEntryId(), file.getVersion(), false);
+			CSVReader csvReader = new CSVReader(new FileReader(rawFile));
+
+			String [] nextLine;
+			int i = 0;
+			while ((nextLine = csvReader.readNext()) != null) {
+				Map<String, String> row = new HashMap<String, String>();
+				
+				if(i == 0) {
+					i++;
+					continue;
+				}
+				
+				row = generateRow(nextLine, columns, email);
+				results.add(row);
+			}
+		     
+			csvReader.close();
+		} catch (PortalException e) {
+			LOG.error("Utils::getFileColumns Exception", e);
+		} catch (SystemException e) {
+			LOG.error("Utils::getFileColumns Exception", e);
+		} catch (FileNotFoundException e) {
+			LOG.error("Utils::getFileColumns Exception", e);
+		} catch (Exception e) {
+			LOG.error("Utils::getFileColumns Exception", e);
+		}
+		
+		return results;
 	}
 }

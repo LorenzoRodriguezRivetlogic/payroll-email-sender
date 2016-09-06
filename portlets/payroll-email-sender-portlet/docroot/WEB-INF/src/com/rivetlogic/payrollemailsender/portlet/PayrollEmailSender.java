@@ -13,11 +13,13 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.payrollemailsender.model.FileColumn;
 import com.rivetlogic.payrollemailsender.util.FileUtil;
+import com.rivetlogic.payrollemailsender.util.MailUtil;
 import com.rivetlogic.payrollemailsender.util.WebKeys;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -104,6 +106,22 @@ public class PayrollEmailSender extends MVCPortlet {
 	}
 	
 	public void sendEmails(ActionRequest request, ActionResponse response) throws IOException {
-		
+		String fileId = ParamUtil.getString(request, WebKeys.FILE_ID);
+		String emailColumn = ParamUtil.getString(request, WebKeys.COLUMN_EMAIL);
+		String columnsToUse = ParamUtil.getString(request, WebKeys.COLUMNS_TO_USE);
+	    String content = ParamUtil.getString(request, WebKeys.CONTENT);
+	    String senderEmail = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
+	    String emailSubject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
+	    
+	    try {
+		    List<FileColumn> columns = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(columnsToUse);
+		    FileColumn email = (FileColumn) JSONFactoryUtil.looseDeserialize(emailColumn);
+		    
+		    List<Map<String, String>> data = FileUtil.getFileRows(fileId, columns, email);
+	    
+			MailUtil.sendEmails(senderEmail, content, emailSubject, data);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
