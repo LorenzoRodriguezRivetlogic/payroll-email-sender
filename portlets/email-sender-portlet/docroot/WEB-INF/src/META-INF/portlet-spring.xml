@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.rivetlogic.emailsender.service.TemplateLocalService" class="com.rivetlogic.emailsender.service.impl.TemplateLocalServiceImpl" />
+	<bean id="com.rivetlogic.emailsender.service.TemplateService" class="com.rivetlogic.emailsender.service.impl.TemplateServiceImpl" />
+	<bean id="com.rivetlogic.emailsender.service.persistence.TemplatePersistence" class="com.rivetlogic.emailsender.service.persistence.TemplatePersistenceImpl" parent="basePersistence" />
+</beans>
