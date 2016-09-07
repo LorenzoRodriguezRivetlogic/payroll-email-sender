@@ -14,7 +14,18 @@
 
 package com.rivetlogic.emailsender.service.impl;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portlet.dynamicdatamapping.TemplateNameException;
+import com.rivetlogic.emailsender.TemplateValueException;
+import com.rivetlogic.emailsender.model.Template;
 import com.rivetlogic.emailsender.service.base.TemplateLocalServiceBaseImpl;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The implementation of the template local service.
@@ -36,4 +47,54 @@ public class TemplateLocalServiceImpl extends TemplateLocalServiceBaseImpl {
 	 *
 	 * Never reference this interface directly. Always use {@link com.rivetlogic.emailsender.service.TemplateLocalServiceUtil} to access the template local service.
 	 */
+	
+	public List<Template> getGuestbooks (long groupId) throws SystemException {
+	    return templatePersistence.findByGroupId(groupId);
+	}
+
+	public List<Template> getGuestbooks (long groupId, int start, int end)
+	   throws SystemException {
+		return templatePersistence.findByGroupId(groupId, start, end);
+	}
+	
+	protected void validate (String name, String value) throws PortalException {
+	    if (Validator.isNull(name)) {
+	       throw new TemplateNameException();
+	    }
+	    
+	    if (Validator.isNull(value)) {
+	    	throw new TemplateValueException();
+		}
+	}
+	
+	public Template addTemplate(long userId, String name, String value, ServiceContext serviceContext) 
+			throws SystemException, PortalException {
+		
+		long groupId = serviceContext.getScopeGroupId();
+		
+		User user = userPersistence.findByPrimaryKey(userId);
+
+		Date now = new Date();
+
+		validate(name, value);
+
+		long templateId = counterLocalService.increment();
+
+		Template template = templatePersistence.create(templateId);
+
+		template.setUuid(serviceContext.getUuid());
+		template.setUserId(userId);
+		template.setGroupId(groupId);
+		template.setCompanyId(user.getCompanyId());
+		template.setUserName(user.getFullName());
+		template.setCreateDate(serviceContext.getCreateDate(now));
+		template.setModifiedDate(serviceContext.getModifiedDate(now));
+		template.setName(name);
+		template.setValue(value);
+		template.setExpandoBridgeAttributes(serviceContext);
+
+		templatePersistence.update(template);
+
+		return template;
+	}
 }
