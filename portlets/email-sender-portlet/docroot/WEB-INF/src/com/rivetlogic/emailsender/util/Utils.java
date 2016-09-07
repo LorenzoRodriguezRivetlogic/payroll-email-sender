@@ -1,6 +1,6 @@
-package com.rivetlogic.payrollemailsender.util;
+package com.rivetlogic.emailsender.util;
 
-import com.rivetlogic.payrollemailsender.model.FileColumn;
+import com.rivetlogic.emailsender.model.FileColumn;
 
 import java.util.List;
 

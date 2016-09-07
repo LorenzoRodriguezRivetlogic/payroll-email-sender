@@ -1,4 +1,4 @@
-package com.rivetlogic.payrollemailsender.util;
+package com.rivetlogic.emailsender.util;
 
 public interface PrefsKeys {
 	

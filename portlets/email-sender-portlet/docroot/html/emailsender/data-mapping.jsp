@@ -29,7 +29,7 @@
 			total="<%= list.size() %>" />
 	
 		<liferay-ui:search-container-row
-			className="com.rivetlogic.payrollemailsender.model.FileColumn"
+			className="com.rivetlogic.emailsender.model.FileColumn"
 			keyProperty="id"
 			modelVar="column" >
 			

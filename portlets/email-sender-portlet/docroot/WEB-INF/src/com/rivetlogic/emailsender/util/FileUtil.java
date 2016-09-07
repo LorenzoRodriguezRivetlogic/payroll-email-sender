@@ -1,4 +1,4 @@
-package com.rivetlogic.payrollemailsender.util;
+package com.rivetlogic.emailsender.util;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -15,7 +15,7 @@ import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
 import com.liferay.portlet.documentlibrary.service.DLAppServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
 import com.opencsv.CSVReader;
-import com.rivetlogic.payrollemailsender.model.FileColumn;
+import com.rivetlogic.emailsender.model.FileColumn;
 
 import java.io.File;
 import java.io.FileNotFoundException;

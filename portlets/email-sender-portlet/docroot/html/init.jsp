@@ -37,12 +37,12 @@
 <%@ page import="javax.portlet.PortletURL" %>
 <%@ page import="javax.portlet.PortletPreferences"%>
 
-<%@ page import="com.rivetlogic.payrollemailsender.util.WebKeys" %>
-<%@ page import="com.rivetlogic.payrollemailsender.util.PrefsKeys"%>
-<%@ page import="com.rivetlogic.payrollemailsender.util.MailUtil"%>
-<%@ page import="com.rivetlogic.payrollemailsender.util.FileUtil"%>
-<%@ page import="com.rivetlogic.payrollemailsender.util.Utils"%>
-<%@ page import="com.rivetlogic.payrollemailsender.model.FileColumn"%>
+<%@ page import="com.rivetlogic.emailsender.util.WebKeys" %>
+<%@ page import="com.rivetlogic.emailsender.util.PrefsKeys"%>
+<%@ page import="com.rivetlogic.emailsender.util.MailUtil"%>
+<%@ page import="com.rivetlogic.emailsender.util.FileUtil"%>
+<%@ page import="com.rivetlogic.emailsender.util.Utils"%>
+<%@ page import="com.rivetlogic.emailsender.model.FileColumn"%>
 
 <portlet:defineObjects />
 <theme:defineObjects />

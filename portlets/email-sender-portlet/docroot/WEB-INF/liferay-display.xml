@@ -3,7 +3,7 @@
 
 <display>
 	
-	<category name="category.sample">
-		<portlet id="payroll-email-sender"></portlet>
+	<category name="category.tools">
+		<portlet id="email-sender"></portlet>
 	</category>
 </display>

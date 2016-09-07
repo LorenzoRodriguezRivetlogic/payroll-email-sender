@@ -1,4 +1,4 @@
-package com.rivetlogic.payrollemailsender.portlet;
+package com.rivetlogic.emailsender.portlet;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -11,10 +11,10 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
-import com.rivetlogic.payrollemailsender.model.FileColumn;
-import com.rivetlogic.payrollemailsender.util.FileUtil;
-import com.rivetlogic.payrollemailsender.util.MailUtil;
-import com.rivetlogic.payrollemailsender.util.WebKeys;
+import com.rivetlogic.emailsender.model.FileColumn;
+import com.rivetlogic.emailsender.util.FileUtil;
+import com.rivetlogic.emailsender.util.MailUtil;
+import com.rivetlogic.emailsender.util.WebKeys;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,12 +26,11 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 
 /**
- * Portlet implementation class PayrollEmailSender
+ * Portlet implementation class EmailSender
  */
-public class PayrollEmailSender extends MVCPortlet {
-	
-	private static final Log LOG = LogFactoryUtil.getLog(PayrollEmailSender.class);
- 
+public class EmailSender extends MVCPortlet {
+	private static final Log LOG = LogFactoryUtil.getLog(EmailSender.class);
+	 
 	public void uploadCsv(ActionRequest request, ActionResponse response) throws PortletException,IOException {
 		
         UploadPortletRequest upload = PortalUtil.getUploadPortletRequest(request);
@@ -128,4 +127,5 @@ public class PayrollEmailSender extends MVCPortlet {
 			e.printStackTrace();
 		}
 	}
+
 }

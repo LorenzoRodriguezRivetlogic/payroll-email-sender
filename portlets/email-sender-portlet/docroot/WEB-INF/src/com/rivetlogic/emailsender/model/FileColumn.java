@@ -1,4 +1,4 @@
-package com.rivetlogic.payrollemailsender.model;
+package com.rivetlogic.emailsender.model;
 
 import java.io.Serializable;
 

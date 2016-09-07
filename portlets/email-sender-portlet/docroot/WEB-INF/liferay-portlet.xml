@@ -4,18 +4,16 @@
 <liferay-portlet-app>
 	
 	<portlet>
-		<portlet-name>payroll-email-sender</portlet-name>
+		<portlet-name>email-sender</portlet-name>
 		<icon>/icon.png</icon>
 		<header-portlet-css>/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>
             /js/ckeditor/ckeditor.js
         </footer-portlet-javascript>
-        <footer-portlet-javascript>
-            /js/main.js
-        </footer-portlet-javascript>
-		<css-class-wrapper>
-			payroll-email-sender-portlet
-		</css-class-wrapper>
+		<footer-portlet-javascript>
+			/js/main.js
+		</footer-portlet-javascript>
+		<css-class-wrapper>email-sender-portlet</css-class-wrapper>
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>

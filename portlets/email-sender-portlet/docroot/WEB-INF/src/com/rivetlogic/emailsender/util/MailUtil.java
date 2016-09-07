@@ -1,8 +1,7 @@
-package com.rivetlogic.payrollemailsender.util;
+package com.rivetlogic.emailsender.util;
 
 import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.kernel.mail.MailMessage;
-import com.rivetlogic.payrollemailsender.model.FileColumn;
 
 import java.util.List;
 import java.util.Map;
