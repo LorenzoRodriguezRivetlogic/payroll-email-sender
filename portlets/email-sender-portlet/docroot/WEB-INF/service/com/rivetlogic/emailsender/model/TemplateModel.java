@@ -226,7 +226,6 @@ public interface TemplateModel extends BaseModel<Template>, StagedGroupedModel {
 	 *
 	 * @return the value of this template
 	 */
-	@AutoEscape
 	public String getValue();
 
 	/**

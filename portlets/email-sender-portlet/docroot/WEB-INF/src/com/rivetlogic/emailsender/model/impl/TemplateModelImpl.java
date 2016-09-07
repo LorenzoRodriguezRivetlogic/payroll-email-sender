@@ -78,7 +78,7 @@ public class TemplateModelImpl extends BaseModelImpl<Template>
 			{ "name", Types.VARCHAR },
 			{ "value", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table RL_Template (uuid_ VARCHAR(75) null,templateId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,value VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table RL_Template (uuid_ VARCHAR(75) null,templateId LONG not null primary key,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,value TEXT null)";
 	public static final String TABLE_SQL_DROP = "drop table RL_Template";
 	public static final String ORDER_BY_JPQL = " ORDER BY template.templateId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY RL_Template.templateId ASC";

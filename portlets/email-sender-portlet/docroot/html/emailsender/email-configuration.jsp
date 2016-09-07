@@ -80,8 +80,7 @@
 </aui:container>
 
 <script type="text/javascript">
-	Liferay.on('portletReady',
-	   	function(event) {    
+	Liferay.on('portletReady',function(event) {    
 			if('_' + event.portletId + '_' == '<portlet:namespace/>'){
 				CKEDITOR.instances.editor1.setData('<%= bckTemplate %>');
 			}

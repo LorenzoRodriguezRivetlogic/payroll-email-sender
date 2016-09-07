@@ -32,4 +32,12 @@ public class Utils {
 		
 		return tableStart + columnsName + rowChange + columnsData + tableEnd;
 	}
+	
+	public static String removeEscapeChars(String arg) {
+		arg = arg.replace("\n", "");
+		arg = arg.replace("\t", "");
+		arg = arg.replace("&nbsp;", " ");
+		
+		return arg;
+	}
 }

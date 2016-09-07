@@ -8,5 +8,5 @@ create table RL_Template (
 	createDate DATE null,
 	modifiedDate DATE null,
 	name VARCHAR(75) null,
-	value VARCHAR(75) null
+	value TEXT null
 );

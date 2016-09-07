@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
 <model-hints>
+	<hint-collection name="TEXTAREA">
+		<hint name="max-length">10000</hint>
+	</hint-collection>
 	<model name="com.rivetlogic.emailsender.model.Template">
 		<field name="uuid" type="String" />
 		<field name="templateId" type="long" />
@@ -11,6 +14,9 @@
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />
 		<field name="name" type="String" />
-		<field name="value" type="String" />
+		<field name="value" type="String">
+			<hint-collection name="TEXTAREA" />
+			<hint name="auto-escape">false</hint>
+		</field>
 	</model>
 </model-hints>

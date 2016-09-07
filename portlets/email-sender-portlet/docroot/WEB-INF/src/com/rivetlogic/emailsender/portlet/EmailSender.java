@@ -18,6 +18,7 @@ import com.rivetlogic.emailsender.model.Template;
 import com.rivetlogic.emailsender.service.TemplateLocalServiceUtil;
 import com.rivetlogic.emailsender.util.FileUtil;
 import com.rivetlogic.emailsender.util.MailUtil;
+import com.rivetlogic.emailsender.util.Utils;
 import com.rivetlogic.emailsender.util.WebKeys;
 
 import java.io.IOException;
@@ -98,8 +99,7 @@ public class EmailSender extends MVCPortlet {
 		String emailSender = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
 	    String subject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
 	    
-	    templateValue = templateValue.replace("\n", "");
-	    templateValue = templateValue.replace("\t", "");
+	    templateValue = Utils.removeEscapeChars(templateValue);
 	    
 	    response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.PREVIEW_URL);
 	    response.setRenderParameter(WebKeys.FILE_ID, String.valueOf(fileId));
@@ -142,6 +142,8 @@ public class EmailSender extends MVCPortlet {
 	    String value = ParamUtil.getString(request, WebKeys.TEMPLATE_VALUE);
 	    long templateId = ParamUtil.getLong(request, WebKeys.TEMPLATE_ID);
 
+	    value = Utils.removeEscapeChars(value);
+	    
 	    try {
 	    	if (templateId > 0) {
 				TemplateLocalServiceUtil.updateTemplate(serviceContext.getUserId(), templateId, name, value, serviceContext);
@@ -155,6 +157,7 @@ public class EmailSender extends MVCPortlet {
 	        SessionErrors.add(request, e.getClass().getName());
 	        PortalUtil.copyRequestParameters(request, response);
 	        response.setRenderParameter("mvcPath", WebKeys.TEMPLATE_EDIT_URL);
+	        e.printStackTrace();
 	    }
 	    
 	    response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.TEMPLATE_MANAGER_URL);
