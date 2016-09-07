@@ -17,6 +17,7 @@ package com.rivetlogic.emailsender.service.impl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.ResourceConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portlet.dynamicdatamapping.TemplateNameException;
@@ -94,7 +95,49 @@ public class TemplateLocalServiceImpl extends TemplateLocalServiceBaseImpl {
 		template.setExpandoBridgeAttributes(serviceContext);
 
 		templatePersistence.update(template);
-
+		
 		return template;
+	}
+	
+	public Template deleteTemplate(long templateId, ServiceContext serviceContext)
+		    throws PortalException, SystemException {
+
+		Template template = getTemplate(templateId);
+
+		resourceLocalService.deleteResource(serviceContext.getCompanyId(), Template.class.getName(),
+		ResourceConstants.SCOPE_INDIVIDUAL, templateId);
+		
+		template = deleteTemplate(templateId);
+		
+		return template;
+	}
+	
+	public Template updateTemplate(long userId, long templateId, String name, String value, ServiceContext serviceContext)
+	    throws PortalException, SystemException {
+
+	    long groupId = serviceContext.getScopeGroupId();
+
+	    User user = userPersistence.findByPrimaryKey(userId);
+
+	    Date now = new Date();
+
+	    validate(name, value);
+
+	    Template template = getTemplate(templateId);
+
+	    template.setUserId(userId);
+	    template.setUserName(user.getFullName());
+	    template.setName(name);
+	    template.setValue(value);
+	    template.setModifiedDate(serviceContext.getModifiedDate(now));
+	    template.setExpandoBridgeAttributes(serviceContext);
+
+	    templatePersistence.update(template);
+
+	    resourceLocalService.updateResources(
+	        user.getCompanyId(), groupId, Template.class.getName(), templateId, serviceContext.getGroupPermissions(),
+	        serviceContext.getGuestPermissions());
+
+	    return template;
 	}
 }

@@ -352,6 +352,50 @@ public class TemplateLocalServiceWrapper implements TemplateLocalService,
 			arguments);
 	}
 
+	@Override
+	public java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _templateLocalService.getGuestbooks(groupId);
+	}
+
+	@Override
+	public java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _templateLocalService.getGuestbooks(groupId, start, end);
+	}
+
+	@Override
+	public com.rivetlogic.emailsender.model.Template addTemplate(long userId,
+		java.lang.String name, java.lang.String value,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _templateLocalService.addTemplate(userId, name, value,
+			serviceContext);
+	}
+
+	@Override
+	public com.rivetlogic.emailsender.model.Template deleteTemplate(
+		long templateId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _templateLocalService.deleteTemplate(templateId, serviceContext);
+	}
+
+	@Override
+	public com.rivetlogic.emailsender.model.Template updateTemplate(
+		long userId, long templateId, java.lang.String name,
+		java.lang.String value,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _templateLocalService.updateTemplate(userId, templateId, name,
+			value, serviceContext);
+	}
+
 	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */

@@ -9,9 +9,13 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 import com.rivetlogic.emailsender.model.FileColumn;
+import com.rivetlogic.emailsender.model.Template;
+import com.rivetlogic.emailsender.service.TemplateLocalServiceUtil;
 import com.rivetlogic.emailsender.util.FileUtil;
 import com.rivetlogic.emailsender.util.MailUtil;
 import com.rivetlogic.emailsender.util.WebKeys;
@@ -29,6 +33,7 @@ import javax.portlet.PortletException;
  * Portlet implementation class EmailSender
  */
 public class EmailSender extends MVCPortlet {
+	
 	private static final Log LOG = LogFactoryUtil.getLog(EmailSender.class);
 	 
 	public void uploadCsv(ActionRequest request, ActionResponse response) throws PortletException,IOException {
@@ -128,4 +133,48 @@ public class EmailSender extends MVCPortlet {
 		}
 	}
 
+	public void addTemplate(ActionRequest request, ActionResponse response)
+	        throws PortalException, SystemException, IOException {
+
+	    ServiceContext serviceContext = ServiceContextFactory.getInstance(Template.class.getName(), request);
+
+	    String name = ParamUtil.getString(request, WebKeys.TEMPLATE_NAME);
+	    String value = ParamUtil.getString(request, WebKeys.TEMPLATE_VALUE);
+	    long templateId = ParamUtil.getLong(request, WebKeys.TEMPLATE_ID);
+
+	    try {
+	    	if (templateId > 0) {
+				TemplateLocalServiceUtil.updateTemplate(serviceContext.getUserId(), templateId, name, value, serviceContext);
+				SessionMessages.add(request, "templateEdited");
+			} else {
+				TemplateLocalServiceUtil.addTemplate(serviceContext.getUserId(), name, value, serviceContext);
+		        SessionMessages.add(request, "templateAdded");
+			}  
+	        
+	    } catch (Exception e) {
+	        SessionErrors.add(request, e.getClass().getName());
+	        PortalUtil.copyRequestParameters(request, response);
+	        response.setRenderParameter("mvcPath", WebKeys.TEMPLATE_EDIT_URL);
+	    }
+	    
+	    response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.TEMPLATE_MANAGER_URL);
+	    sendRedirect(request, response);
+	}
+	
+	public void deleteTemplate (ActionRequest request, ActionResponse response) throws IOException {
+
+	    long templateId = ParamUtil.getLong(request, WebKeys.TEMPLATE_ID);
+
+	    try {
+
+	       ServiceContext serviceContext = ServiceContextFactory.getInstance(Template.class.getName(), request);
+
+	       TemplateLocalServiceUtil.deleteTemplate(templateId, serviceContext);
+	    } catch (Exception e) {
+	       SessionErrors.add(request, e.getClass().getName());
+	    }
+	    
+	    response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.TEMPLATE_MANAGER_URL);
+	    sendRedirect(request, response);
+	}
 }

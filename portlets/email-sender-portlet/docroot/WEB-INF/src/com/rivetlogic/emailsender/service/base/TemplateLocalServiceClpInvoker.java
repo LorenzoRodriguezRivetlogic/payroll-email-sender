@@ -129,6 +129,34 @@ public class TemplateLocalServiceClpInvoker {
 		_methodName39 = "setBeanIdentifier";
 
 		_methodParameterTypes39 = new String[] { "java.lang.String" };
+
+		_methodName44 = "getGuestbooks";
+
+		_methodParameterTypes44 = new String[] { "long" };
+
+		_methodName45 = "getGuestbooks";
+
+		_methodParameterTypes45 = new String[] { "long", "int", "int" };
+
+		_methodName47 = "addTemplate";
+
+		_methodParameterTypes47 = new String[] {
+				"long", "java.lang.String", "java.lang.String",
+				"com.liferay.portal.service.ServiceContext"
+			};
+
+		_methodName48 = "deleteTemplate";
+
+		_methodParameterTypes48 = new String[] {
+				"long", "com.liferay.portal.service.ServiceContext"
+			};
+
+		_methodName49 = "updateTemplate";
+
+		_methodParameterTypes49 = new String[] {
+				"long", "long", "java.lang.String", "java.lang.String",
+				"com.liferay.portal.service.ServiceContext"
+			};
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -256,6 +284,39 @@ public class TemplateLocalServiceClpInvoker {
 			return null;
 		}
 
+		if (_methodName44.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
+			return TemplateLocalServiceUtil.getGuestbooks(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName45.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes45, parameterTypes)) {
+			return TemplateLocalServiceUtil.getGuestbooks(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue(),
+				((Integer)arguments[2]).intValue());
+		}
+
+		if (_methodName47.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes47, parameterTypes)) {
+			return TemplateLocalServiceUtil.addTemplate(((Long)arguments[0]).longValue(),
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(com.liferay.portal.service.ServiceContext)arguments[3]);
+		}
+
+		if (_methodName48.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes48, parameterTypes)) {
+			return TemplateLocalServiceUtil.deleteTemplate(((Long)arguments[0]).longValue(),
+				(com.liferay.portal.service.ServiceContext)arguments[1]);
+		}
+
+		if (_methodName49.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes49, parameterTypes)) {
+			return TemplateLocalServiceUtil.updateTemplate(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue(),
+				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
+				(com.liferay.portal.service.ServiceContext)arguments[4]);
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -303,4 +364,14 @@ public class TemplateLocalServiceClpInvoker {
 	private String[] _methodParameterTypes38;
 	private String _methodName39;
 	private String[] _methodParameterTypes39;
+	private String _methodName44;
+	private String[] _methodParameterTypes44;
+	private String _methodName45;
+	private String[] _methodParameterTypes45;
+	private String _methodName47;
+	private String[] _methodParameterTypes47;
+	private String _methodName48;
+	private String[] _methodParameterTypes48;
+	private String _methodName49;
+	private String[] _methodParameterTypes49;
 }

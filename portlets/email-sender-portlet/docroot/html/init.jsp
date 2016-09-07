@@ -43,6 +43,8 @@
 <%@ page import="com.rivetlogic.emailsender.util.FileUtil"%>
 <%@ page import="com.rivetlogic.emailsender.util.Utils"%>
 <%@ page import="com.rivetlogic.emailsender.model.FileColumn"%>
+<%@ page import="com.rivetlogic.emailsender.model.Template"%>
+<%@ page import="com.rivetlogic.emailsender.service.TemplateLocalServiceUtil" %>
 
 <portlet:defineObjects />
 <theme:defineObjects />

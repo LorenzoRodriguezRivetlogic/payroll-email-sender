@@ -335,6 +335,45 @@ public class TemplateLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getGuestbooks(groupId);
+	}
+
+	public static java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getGuestbooks(groupId, start, end);
+	}
+
+	public static com.rivetlogic.emailsender.model.Template addTemplate(
+		long userId, java.lang.String name, java.lang.String value,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addTemplate(userId, name, value, serviceContext);
+	}
+
+	public static com.rivetlogic.emailsender.model.Template deleteTemplate(
+		long templateId,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().deleteTemplate(templateId, serviceContext);
+	}
+
+	public static com.rivetlogic.emailsender.model.Template updateTemplate(
+		long userId, long templateId, java.lang.String name,
+		java.lang.String value,
+		com.liferay.portal.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService()
+				   .updateTemplate(userId, templateId, name, value,
+			serviceContext);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}
