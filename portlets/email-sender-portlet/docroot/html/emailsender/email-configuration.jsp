@@ -11,6 +11,8 @@
 	List<FileColumn> params = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(paramsAttr);
 	FileColumn emailColumn = (FileColumn) JSONFactoryUtil.looseDeserialize(emailString);
 	
+	List<Template> templates = TemplateLocalServiceUtil.getTemplates(scopeGroupId);
+	
 	String bckTemplate = "";
 	
 	if (template.isEmpty()) {
@@ -25,6 +27,8 @@
     <portlet:param name="fileId" value="<%= fileId %>" />
 </portlet:renderURL>
 
+<portlet:resourceURL var="resourceURL"/>
+
 <portlet:actionURL name="showPreview" var="showPreviewURL">
 	<portlet:param name="mvcPath" value="<%= WebKeys.PREVIEW_URL %>" />
 </portlet:actionURL>
@@ -34,12 +38,13 @@
 <aui:container>
 	<aui:row>
 		<aui:col>
-			<aui:form action='<%= showPreviewURL %>' name='fm' method="post">
+			<aui:form action="<%= showPreviewURL %>" name="<portlet:namespace />fm"  method="post">
 
 				<aui:fieldset>
 					<aui:input name="columnsToUse" value="<%= paramsAttr %>" type="hidden" />
 					<aui:input name="emailColumn" value="<%= emailString %>" type="hidden" />
 					<aui:input name="fileId" value="<%= fileId %>" type="hidden" />
+					<aui:input name="templateId" value="" type="hidden" />
 					<aui:input name="content" value="" type="hidden" />
 				
 					<aui:input name="senderEmail" label="subscription-email" required="true" value="<%= emailSender %>">
@@ -74,6 +79,26 @@
 				<aui:button-row>
 					<aui:button type="submit" value="show-preview" onClick="submitToPreview();" />
 				</aui:button-row>
+				<div class="templateSelector">
+					<aui:select id="templates" name="templates" label="templates" showEmptyOption="true" >
+						<% 
+						for (Template templateSel : templates) {
+						%>
+							<aui:option value="<%= templateSel.getTemplateId() %>" >
+								<liferay-ui:message key="<%= templateSel.getName() %>" />
+							</aui:option>
+						<% 
+						}
+						%>
+					</aui:select>
+					<aui:input name="name" />
+					<aui:button-row>
+						<aui:button type="button" id="load" value="load" onClick="callServeResource()" />
+						<aui:button type="button" id="update" value="update" onClick="callUpdateResource()" />
+						<aui:button type="button" id="delete" value="delete" onClick="callDeleteResource()" />
+						<aui:button type="button" id="save" value="save" onClick="callSaveResource()" />
+					</aui:button-row>
+				</div>
 			</aui:form>
 		</aui:col>
 	</aui:row>
@@ -85,29 +110,144 @@
 				CKEDITOR.instances.editor1.setData('<%= bckTemplate %>');
 			}
 	   	}
-	);      
+	);   
 	function submitToPreview() {
 		var template = CKEDITOR.instances.editor1.getData();
-		var senderEmail = document.getElementById("<portlet:namespace />senderEmail").value;
-		var emailSubject = document.getElementById("<portlet:namespace />emailSubject").value;
-		
 		document.getElementById("<portlet:namespace />content").value = template;
-		
-		if (senderEmail === "") {
-			return;
-		}
-		
-		if (emailSubject === "") {
-			return;
-		}
-		if (!validateEmail(senderEmail)) {
-			return;	
-		}
 		
 		document.<portlet:namespace />fm.submit();
 	}
-	function validateEmail(email) {
-	    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	    return re.test(email);
+	function callServeResource(){
+	    AUI().use('aui-base', function(A){
+	    	var option = A.one('#<portlet:namespace/>templates');
+			var template = option.val();
+			if (template === '') {
+				alert('Select a template');
+				return;
+			}
+			
+	        A.io.request('<%=resourceURL.toString()%>', {
+				method: 'post',
+				data: {
+					<portlet:namespace />action: 'load',
+					<portlet:namespace />templateId: template
+				},
+				on: {
+				     success: function() {
+				    	var label = A.one('#<portlet:namespace/>templates option:selected').attr('text');
+						document.getElementById('<portlet:namespace />name').value = label;
+				     	CKEDITOR.instances.editor1.setData(this.get('responseData'));
+				     }
+				}
+			});
+	    });
+	}
+	function callSaveResource(){
+	    AUI().use('aui-base', function(A){
+	    	var name = A.one('#<portlet:namespace/>name').attr('value');
+			if (name === '') {
+				alert('The name cannot be empty');
+				return;
+			}
+			
+			var template = CKEDITOR.instances.editor1.getData();
+			if (template === '') {
+				alert('The template cannot be empty');
+				return;
+			}
+			
+			A.io.request('<%=resourceURL.toString()%>', {
+				method: 'post',
+				data: {
+					<portlet:namespace />action: 'save',
+					<portlet:namespace />name: name,
+					<portlet:namespace />template: template
+				},
+				on: {
+				     success: function() {
+				     	var result = this.get('responseData');
+				    	if (result === 'error') {
+				    		alert('Error save the template save');
+						} else {
+							var select = A.one('#<portlet:namespace/>templates');
+				    		var option  = A.Node.create( '<option value=\"'+result+'\">'+name+'</option>');
+				    		select.append(option);
+							
+							alert('Template saved');
+						}
+				     }
+				}
+			});
+	    });
+	}
+	function callUpdateResource(){
+	    AUI().use('aui-base', function(A){
+	    	var option = A.one('#<portlet:namespace/>templates');
+			var templateId = option.val();
+			if (templateId === '') {
+				alert('Select a template');
+			}
+			
+			var name = A.one('#<portlet:namespace/>name').attr('value');
+			if (name === '') {
+				alert('The name cannot be empty');
+				return;
+			}
+			
+			var template = CKEDITOR.instances.editor1.getData();
+			if (template === '') {
+				alert('The template cannot be empty');
+				return;
+			}
+			
+			A.io.request('<%=resourceURL.toString()%>', {
+				method: 'post',
+				data: {
+					<portlet:namespace />action: 'update',
+					<portlet:namespace />templateId: templateId,
+					<portlet:namespace />name: name,
+					<portlet:namespace />template: template
+				},
+				on: {
+				     success: function() {
+				    	 var result = this.get('responseData');
+				    	 if (result === 'success') {
+				    		alert('Template updated');
+						 } else {
+							alert('Error updating the template save');
+						 }
+				     }
+				}
+			});
+	    });
+	}
+	function callDeleteResource(){
+	    AUI().use('aui-base', function(A){
+	    	var option = A.one('#<portlet:namespace/>templates');
+			var template = option.val();
+			if (template === '') {
+				alert('Select a template');
+			}
+			
+			A.io.request('<%=resourceURL.toString()%>', {
+				method: 'post',
+				data: {
+					<portlet:namespace />action: 'delete',
+					<portlet:namespace />templateId: template,
+				},
+				on: {
+				     success: function() {
+				    	 var result = this.get('responseData');
+				    	 if (result === 'success') {
+				    	 	A.one('#<portlet:namespace/>templates option[value=\''+template+'\']').remove();
+				    	 	document.getElementById('<portlet:namespace />name').value = '';
+				    	 	alert('Template deleted');
+						 } else {
+							alert('Error deleting the template save');
+						 }
+				     }
+				}
+			});
+	    });
 	}
 </script>

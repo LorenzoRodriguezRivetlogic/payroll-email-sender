@@ -353,17 +353,17 @@ public class TemplateLocalServiceWrapper implements TemplateLocalService,
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+	public java.util.List<com.rivetlogic.emailsender.model.Template> getTemplates(
 		long groupId)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return _templateLocalService.getGuestbooks(groupId);
+		return _templateLocalService.getTemplates(groupId);
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+	public java.util.List<com.rivetlogic.emailsender.model.Template> getTemplates(
 		long groupId, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return _templateLocalService.getGuestbooks(groupId, start, end);
+		return _templateLocalService.getTemplates(groupId, start, end);
 	}
 
 	@Override

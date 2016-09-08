@@ -13,11 +13,6 @@
 <portlet:actionURL name="uploadCsv" var="uploadURL">
 </portlet:actionURL>
 
- <portlet:renderURL var="templateManagerURL">
-	<portlet:param name="mvcPath" value="<%= WebKeys.TEMPLATE_MANAGER_URL %>" />
-</portlet:renderURL>
- 
-
 <aui:form action="<%= uploadURL %>" method="POST" enctype="multipart/form-data"> 
     <aui:row>
         <aui:column columnWidth="50">
@@ -31,5 +26,3 @@
         <aui:button type="submit" value="continue-button" />
     </aui:button-row>
 </aui:form>
-
-<a href="<%= templateManagerURL.toString() %>"><liferay-ui:message key="manage-templates" /></a>

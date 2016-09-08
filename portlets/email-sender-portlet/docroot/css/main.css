@@ -61,3 +61,19 @@
     background: #fff;
     position: relative;
 }
+
+
+.footButtons {
+	display: inline;
+}
+
+.templateSelector {
+	
+	padding: 10px;
+	background: #fff;
+    border: 1px solid #E7E7E7;
+}
+
+.buttons {
+
+}

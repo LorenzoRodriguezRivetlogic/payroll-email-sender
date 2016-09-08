@@ -130,11 +130,11 @@ public class TemplateLocalServiceClp implements TemplateLocalService {
 
 		_methodParameterTypes21 = new String[] { "java.lang.String" };
 
-		_methodName23 = "getGuestbooks";
+		_methodName23 = "getTemplates";
 
 		_methodParameterTypes23 = new String[] { "long" };
 
-		_methodName24 = "getGuestbooks";
+		_methodName24 = "getTemplates";
 
 		_methodParameterTypes24 = new String[] { "long", "int", "int" };
 
@@ -840,7 +840,7 @@ public class TemplateLocalServiceClp implements TemplateLocalService {
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+	public java.util.List<com.rivetlogic.emailsender.model.Template> getTemplates(
 		long groupId)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;
@@ -869,7 +869,7 @@ public class TemplateLocalServiceClp implements TemplateLocalService {
 	}
 
 	@Override
-	public java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+	public java.util.List<com.rivetlogic.emailsender.model.Template> getTemplates(
 		long groupId, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
 		Object returnObj = null;

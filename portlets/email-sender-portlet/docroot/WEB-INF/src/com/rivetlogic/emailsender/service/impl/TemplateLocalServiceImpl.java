@@ -49,11 +49,11 @@ public class TemplateLocalServiceImpl extends TemplateLocalServiceBaseImpl {
 	 * Never reference this interface directly. Always use {@link com.rivetlogic.emailsender.service.TemplateLocalServiceUtil} to access the template local service.
 	 */
 	
-	public List<Template> getGuestbooks (long groupId) throws SystemException {
+	public List<Template> getTemplates (long groupId) throws SystemException {
 	    return templatePersistence.findByGroupId(groupId);
 	}
 
-	public List<Template> getGuestbooks (long groupId, int start, int end)
+	public List<Template> getTemplates (long groupId, int start, int end)
 	   throws SystemException {
 		return templatePersistence.findByGroupId(groupId, start, end);
 	}

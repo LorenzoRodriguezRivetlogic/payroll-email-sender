@@ -311,12 +311,12 @@ public interface TemplateLocalService extends BaseLocalService,
 		throws java.lang.Throwable;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+	public java.util.List<com.rivetlogic.emailsender.model.Template> getTemplates(
 		long groupId)
 		throws com.liferay.portal.kernel.exception.SystemException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+	public java.util.List<com.rivetlogic.emailsender.model.Template> getTemplates(
 		long groupId, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException;
 

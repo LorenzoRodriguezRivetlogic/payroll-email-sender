@@ -335,16 +335,16 @@ public class TemplateLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	public static java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+	public static java.util.List<com.rivetlogic.emailsender.model.Template> getTemplates(
 		long groupId)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().getGuestbooks(groupId);
+		return getService().getTemplates(groupId);
 	}
 
-	public static java.util.List<com.rivetlogic.emailsender.model.Template> getGuestbooks(
+	public static java.util.List<com.rivetlogic.emailsender.model.Template> getTemplates(
 		long groupId, int start, int end)
 		throws com.liferay.portal.kernel.exception.SystemException {
-		return getService().getGuestbooks(groupId, start, end);
+		return getService().getTemplates(groupId, start, end);
 	}
 
 	public static com.rivetlogic.emailsender.model.Template addTemplate(

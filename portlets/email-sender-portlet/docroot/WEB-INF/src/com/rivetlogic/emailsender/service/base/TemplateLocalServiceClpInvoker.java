@@ -130,11 +130,11 @@ public class TemplateLocalServiceClpInvoker {
 
 		_methodParameterTypes39 = new String[] { "java.lang.String" };
 
-		_methodName44 = "getGuestbooks";
+		_methodName44 = "getTemplates";
 
 		_methodParameterTypes44 = new String[] { "long" };
 
-		_methodName45 = "getGuestbooks";
+		_methodName45 = "getTemplates";
 
 		_methodParameterTypes45 = new String[] { "long", "int", "int" };
 
@@ -286,12 +286,12 @@ public class TemplateLocalServiceClpInvoker {
 
 		if (_methodName44.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes44, parameterTypes)) {
-			return TemplateLocalServiceUtil.getGuestbooks(((Long)arguments[0]).longValue());
+			return TemplateLocalServiceUtil.getTemplates(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName45.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes45, parameterTypes)) {
-			return TemplateLocalServiceUtil.getGuestbooks(((Long)arguments[0]).longValue(),
+			return TemplateLocalServiceUtil.getTemplates(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}

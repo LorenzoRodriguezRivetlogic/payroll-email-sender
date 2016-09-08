@@ -22,6 +22,7 @@ import com.rivetlogic.emailsender.util.Utils;
 import com.rivetlogic.emailsender.util.WebKeys;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,8 @@ import java.util.Map;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 
 /**
  * Portlet implementation class EmailSender
@@ -133,51 +136,131 @@ public class EmailSender extends MVCPortlet {
 		}
 	}
 
-	public void addTemplate(ActionRequest request, ActionResponse response)
-	        throws PortalException, SystemException, IOException {
+	public void serveResource(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+			throws IOException, PortletException {
 
-	    ServiceContext serviceContext = ServiceContextFactory.getInstance(Template.class.getName(), request);
-
-	    String name = ParamUtil.getString(request, WebKeys.TEMPLATE_NAME);
-	    String value = ParamUtil.getString(request, WebKeys.TEMPLATE_VALUE);
-	    long templateId = ParamUtil.getLong(request, WebKeys.TEMPLATE_ID);
-
-	    value = Utils.removeEscapeChars(value);
-	    
-	    try {
-	    	if (templateId > 0) {
-				TemplateLocalServiceUtil.updateTemplate(serviceContext.getUserId(), templateId, name, value, serviceContext);
-				SessionMessages.add(request, "templateEdited");
-			} else {
-				TemplateLocalServiceUtil.addTemplate(serviceContext.getUserId(), name, value, serviceContext);
-		        SessionMessages.add(request, "templateAdded");
-			}  
-	        
-	    } catch (Exception e) {
-	        SessionErrors.add(request, e.getClass().getName());
-	        PortalUtil.copyRequestParameters(request, response);
-	        response.setRenderParameter("mvcPath", WebKeys.TEMPLATE_EDIT_URL);
-	        e.printStackTrace();
-	    }
-	    
-	    response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.TEMPLATE_MANAGER_URL);
-	    sendRedirect(request, response);
+		String action = ParamUtil.getString(resourceRequest, "action");
+		
+		if (action.equals(WebKeys.ACTION_LOAD)) {
+			loadAction(resourceRequest, resourceResponse);
+		}
+		   
+		if (action.equals(WebKeys.ACTION_UPDATE)) {
+			updateAction(resourceRequest, resourceResponse);
+		}
+		
+		if (action.equals(WebKeys.ACTION_SAVE)) {
+			saveAction(resourceRequest, resourceResponse);
+		}
+		
+		if (action.equals(WebKeys.ACTION_DELETE)) {
+			deleteAction(resourceRequest, resourceResponse);
+		}
+    }
+	
+	private void loadAction(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+			throws IOException, PortletException {
+		
+		String templateId = ParamUtil.getString(resourceRequest, "templateId");
+        Template template = null;
+        try {
+        	template = TemplateLocalServiceUtil.getTemplate(Long.parseLong(templateId));
+        } catch (PortalException e) {
+            e.printStackTrace();
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+ 
+        resourceResponse.setContentType("text/html");
+        PrintWriter writer = resourceResponse.getWriter();
+        if(template == null){
+            writer.print("");
+        }else{
+        	writer.print(template.getValue());
+        }
+        writer.flush();
+        writer.close();
+        super.serveResource(resourceRequest, resourceResponse);
 	}
 	
-	public void deleteTemplate (ActionRequest request, ActionResponse response) throws IOException {
+	private void updateAction(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+			throws IOException, PortletException {
+		
+		Long templateId = Long.parseLong(ParamUtil.getString(resourceRequest, "templateId"));
+		String name = ParamUtil.getString(resourceRequest, "name");
+		String template = ParamUtil.getString(resourceRequest, "template");
+        
+		resourceResponse.setContentType("text/html");
+        PrintWriter writer = resourceResponse.getWriter();
 
-	    long templateId = ParamUtil.getLong(request, WebKeys.TEMPLATE_ID);
+		try {
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(Template.class.getName(), resourceRequest);
+			TemplateLocalServiceUtil.updateTemplate(serviceContext.getUserId(), templateId, name, template, serviceContext);
+			
+			writer.print("success");
+		} catch (PortalException e) {
+			writer.print("error");
+			e.printStackTrace();
+		} catch (SystemException e) {
+			writer.print("error");
+			e.printStackTrace();
+		}
+		
+        writer.flush();
+        writer.close();
+        super.serveResource(resourceRequest, resourceResponse);
+	}
+	
+	private void saveAction(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+			throws IOException, PortletException {
+		
+		String name = ParamUtil.getString(resourceRequest, "name");
+		String template = ParamUtil.getString(resourceRequest, "template");
+        
+		resourceResponse.setContentType("text/html");
+        PrintWriter writer = resourceResponse.getWriter();
 
-	    try {
+		try {
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(Template.class.getName(), resourceRequest);
+			Template newTemplate = TemplateLocalServiceUtil.addTemplate(serviceContext.getUserId(), name, template, serviceContext);
+			
+			writer.print(newTemplate.getTemplateId());
+		} catch (PortalException e) {
+			writer.print("error");
+			e.printStackTrace();
+		} catch (SystemException e) {
+			writer.print("error");
+			e.printStackTrace();
+		}
+		
+        writer.flush();
+        writer.close();
+        super.serveResource(resourceRequest, resourceResponse);
+	}
+	
+	private void deleteAction(ResourceRequest resourceRequest, ResourceResponse resourceResponse) 
+			throws IOException, PortletException {
+		
+		Long templateId = Long.parseLong(ParamUtil.getString(resourceRequest, "templateId"));
+        
+		resourceResponse.setContentType("text/html");
+        PrintWriter writer = resourceResponse.getWriter();
 
-	       ServiceContext serviceContext = ServiceContextFactory.getInstance(Template.class.getName(), request);
-
-	       TemplateLocalServiceUtil.deleteTemplate(templateId, serviceContext);
-	    } catch (Exception e) {
-	       SessionErrors.add(request, e.getClass().getName());
-	    }
-	    
-	    response.setRenderParameter(WebKeys.JSP_PAGE, WebKeys.TEMPLATE_MANAGER_URL);
-	    sendRedirect(request, response);
+		try {
+			ServiceContext serviceContext = ServiceContextFactory.getInstance(Template.class.getName(), resourceRequest);
+		    TemplateLocalServiceUtil.deleteTemplate(templateId, serviceContext);
+		    
+			writer.print("success");
+		} catch (PortalException e) {
+			writer.print("error");
+			e.printStackTrace();
+		} catch (SystemException e) {
+			writer.print("error");
+			e.printStackTrace();
+		}
+		
+        writer.flush();
+        writer.close();
+        super.serveResource(resourceRequest, resourceResponse);
 	}
 }
