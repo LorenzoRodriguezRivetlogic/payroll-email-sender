@@ -98,6 +98,8 @@ public class EmailSender extends MVCPortlet {
 		List<FileColumn> params = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(ParamUtil.getString(request, WebKeys.COLUMNS_TO_USE));
 		FileColumn emailColumn = (FileColumn) JSONFactoryUtil.looseDeserialize(ParamUtil.getString(request, WebKeys.COLUMN_EMAIL));
 		String fileId = ParamUtil.getString(request, WebKeys.FILE_ID);
+		String templateId = ParamUtil.getString(request, WebKeys.TEMPLATE_ID);
+		String templateName = ParamUtil.getString(request, WebKeys.TEMPLATE_NAME);
 		String templateValue = ParamUtil.getString(request, WebKeys.CONTENT);
 		String emailSender = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
 	    String subject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
@@ -111,6 +113,8 @@ public class EmailSender extends MVCPortlet {
 	    response.setRenderParameter(WebKeys.CONTENT, templateValue);
 	    response.setRenderParameter(WebKeys.SENDER_EMAIL, emailSender);
 	    response.setRenderParameter(WebKeys.EMAIL_SUBJECT, subject);
+	    response.setRenderParameter(WebKeys.TEMPLATE_ID, templateId);
+	    response.setRenderParameter(WebKeys.TEMPLATE_NAME, templateName);
         
         sendRedirect(request, response);
 	}

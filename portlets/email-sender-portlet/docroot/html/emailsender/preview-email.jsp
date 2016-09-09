@@ -7,6 +7,8 @@
 	String template = ParamUtil.getString(request, WebKeys.CONTENT);
 	String emailSender = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
 	String subject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
+	String templateId = ParamUtil.getString(request, WebKeys.TEMPLATE_ID);
+	String templateName = ParamUtil.getString(request, WebKeys.TEMPLATE_NAME);
 	List<FileColumn> params = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(paramsAttr);
 	FileColumn email = (FileColumn) JSONFactoryUtil.looseDeserialize(emailString);
 	
@@ -37,6 +39,8 @@
     <portlet:param name="senderEmail" value="<%= emailSender %>" />
     <portlet:param name="emailSubject" value="<%= subject %>" />
     <portlet:param name="content" value="<%= template %>" />
+    <portlet:param name="templateId" value="<%= templateId %>" />
+    <portlet:param name="name" value="<%= templateName %>" />
 </portlet:renderURL>
 
 <liferay-ui:header showBackURL="true" backURL="<%= returnUrl.toString() %>"  title="preview" />

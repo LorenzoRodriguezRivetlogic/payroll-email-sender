@@ -7,7 +7,9 @@
 	String emailSender = ParamUtil.getString(request, WebKeys.SENDER_EMAIL);
 	String subject = ParamUtil.getString(request, WebKeys.EMAIL_SUBJECT);
 	String template = ParamUtil.getString(request, WebKeys.CONTENT);
-	
+	String templateName = ParamUtil.getString(request, WebKeys.TEMPLATE_NAME);
+	Long templateId = ParamUtil.getLong(request, WebKeys.TEMPLATE_ID, 0);
+
 	List<FileColumn> params = (List<FileColumn>) JSONFactoryUtil.looseDeserialize(paramsAttr);
 	FileColumn emailColumn = (FileColumn) JSONFactoryUtil.looseDeserialize(emailString);
 	
@@ -65,7 +67,7 @@
 								for (FileColumn fileColumn : params) {
 								%>
 								<li>
-								    <div class="contact h-card" data-contact="<%= count %>" draggable="true" tabindex="0"><%= fileColumn.getName() %></div>
+								    <div class="contact h-card" data-contact="<%= count %>" draggable="true" tabindex="0" ><%= fileColumn.getName() %></div>
 								</li>
 								<% 
 								count++;
@@ -84,14 +86,14 @@
 						<% 
 						for (Template templateSel : templates) {
 						%>
-							<aui:option value="<%= templateSel.getTemplateId() %>" >
+							<aui:option value="<%= templateSel.getTemplateId() %>"  selected="<%= templateId == templateSel.getTemplateId() %>">
 								<liferay-ui:message key="<%= templateSel.getName() %>" />
 							</aui:option>
 						<% 
 						}
 						%>
 					</aui:select>
-					<aui:input name="name" />
+					<aui:input name="name" value="<%= templateName %>"/>
 					<aui:button-row>
 						<aui:button type="button" id="load" value="load" onClick="callServeResource()" />
 						<aui:button type="button" id="update" value="update" onClick="callUpdateResource()" />
@@ -136,6 +138,7 @@
 				     success: function() {
 				    	var label = A.one('#<portlet:namespace/>templates option:selected').attr('text');
 						document.getElementById('<portlet:namespace />name').value = label;
+						document.getElementById('<portlet:namespace />templateId').value = template;
 				     	CKEDITOR.instances.editor1.setData(this.get('responseData'));
 				     }
 				}
